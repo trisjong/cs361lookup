@@ -9,8 +9,17 @@ var port = process.env.PORT || 3000;
 app.set("view engine","ejs")
 
 
-app.get("/", function(req, res){
+
+//serve public directory
+app.use(express.static("public"));
+
+
+app.get("/home", function(req, res){
   res.render("home");
+})
+
+app.get("/", function(req, res){
+  res.render("login");
 })
 
 
