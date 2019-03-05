@@ -1,0 +1,29 @@
+<%include partials/navbar%>
+
+
+<body>
+    <table id="table" >
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Pwd</th>
+                <th>Email</th>
+                <th>Zip</th>
+            </tr>
+        </thead>
+         <tbody>
+         <% print.forEach(function (user) { %>
+            <tr>
+                <td><%= user.id %></td>
+                <td><%= user.username %></td>
+                <td><%= user.pwd %></td>
+                <td><%= user.email %></td>
+                <td><%= user.zipcode %></td>
+            </tr>
+         <% }) %>
+         </tbody>
+    </table>
+</body>
+
+</html>
