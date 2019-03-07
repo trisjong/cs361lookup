@@ -12,14 +12,23 @@ app.set("view engine","ejs")
 //serve public directory
 app.use(express.static("public"));
 
+app.get("/", function(req, res){
+  res.render("login",{showMsg:""});
+})
 
 app.get("/home", function(req, res){
   res.render("home");
 })
 
-app.get("/", function(req, res){
-  res.render("login",{errorMsg:""});
+app.get("/updateUsername", function(req, res){
+  res.render("updateUsername");
 })
+
+app.get("/updatePassword", function(req, res){
+  res.render("updatePassword");
+})
+
+
 
 
 app.get('/get-users', function(req, res) {
@@ -55,12 +64,97 @@ app.post("/checkcredentials",function(req,res){
                           if (results.length>0) {
                               res.render("successful-login");
                           } else {
-                              res.render("login",{errorMsg:"Your login credenials were incorrect!!"});
+                              res.render("login",{showMsg:"Your login credenials were incorrect!!"});
                           }
                     }
   );
 
 })
+
+
+
+
+
+// lookupuser
+// samplepwd
+//will be given a password and email combo
+app.post("/updateUsername",function(req,res){
+  // console.log(req.body);
+  var context = {};
+  mysql.pool.query('SELECT * FROM lookup_users WHERE email=? and pwd =?',
+                    [req.body.inputEmail,req.body.inputPassword],
+                    function(err, results, fields) {
+                          if (err) {
+                            next(err);
+                            return;
+                          }
+
+                          if (results.length==1) {
+                              var curVals = results[0];
+                              mysql.pool.query("UPDATE lookup_users SET username=? WHERE id=? ",
+                                [req.body.inputNewUsername, curVals.id],
+                                    function(err, result){
+                                    if(err){
+                                      next(err);
+                                      return;
+                                    }
+                                }
+                            );
+                              context.results = "Your username was updated to " + req.body.inputNewUsername;
+                              res.render("login",{showMsg:context.results});
+                          } else {
+                              context.results = "Error!!!!";
+                              res.render("login",{showMsg:context.results});
+                          }
+                    }
+  );
+
+})
+
+
+
+
+
+
+
+// lookupuser
+// samplepwd
+//will be given a username and email combo
+app.post("/updatePassword",function(req,res){
+  // console.log(req.body);
+  var context = {};
+  mysql.pool.query('SELECT * FROM lookup_users WHERE email=? and username =?',
+                    [req.body.inputEmail,req.body.inputUsername],
+                    function(err, results, fields) {
+                          if (err) {
+                            next(err);
+                            return;
+                          }
+                          if (results.length==1) {
+                              var curVals = results[0];
+                              mysql.pool.query("UPDATE lookup_users SET pwd=? WHERE id=? ",
+                                [req.body.inputNewPassword, curVals.id],
+                                    function(err, result){
+                                    if(err){
+                                      next(err);
+                                      return;
+                                    }
+
+                                }
+                            );
+                              context.results = "Your password was updated!";
+                              res.render("login",{showMsg:context.results});
+                          } else {
+                              context.results = "Nothing happended!!!!";
+                              res.render("login",{showMsg:context.results});
+                          }
+                    }
+  );
+
+})
+
+
+
 
 
 

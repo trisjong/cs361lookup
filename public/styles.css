@@ -27,3 +27,11 @@
     background-color: #9370DB;
     border-color: #9370DB;
 }
+
+
+
+
+#updateDBButton.btn-primary{
+    background-color: #f45042;
+    border-color: #f45042;
+}
