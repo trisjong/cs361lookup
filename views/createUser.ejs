@@ -5,31 +5,26 @@
 
 <div class="container">
 
-  <form class="form-signin" action="/checkcredentials" method="post">
-    <h2 class="form-signin-heading">Login to LookUp!</h2>
+  <form class="form-signin" action="/createUser" method="post">
+    <h2 class="form-signin-heading">Create New User</h2>
 
-    <% if (showMsg) {%>
-    <p style="color:red;"><%= showMsg %></p>
-    <% }%>
     <label for="inputUsername" class="sr-only">Username</label>
     <input name="inputUsername" id="inputUsername" class="form-control" placeholder="Username">
     <br>
+    <label for="inputEmail" class="sr-only">Email</label>
+    <input name="inputEmail"id="inputEmail" class="form-control" placeholder="email">
+    <br>
+    <label for="zipcode" class="sr-only">Zip Code</label>
+    <input name="zipcode"id="zipcode" class="form-control" placeholder="Zip Code">
+    <br>
     <label for="inputPassword" class="sr-only">Password</label>
     <input name="inputPassword" type="password" id="inputPassword" class="form-control" placeholder="Password">
-    <!-- <div class="checkbox">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div> -->
     <br>
-    <button id="loginbutton" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button id="submitButton" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     <br>
-    <p><a href="/createUser">Click here to create an account!</a></p>
-
-    <p><a href="/updateUsername">Forgot Username?</a></p>
-    <p><a href="/updatePassword">Forgot Password?</a></p>
+    <p><a href="/">Go Back to the login page</a></p>
   </form>
 
-</div> <!-- /container -->
+</div> 
 
 <%include partials/footer%>
