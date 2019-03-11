@@ -8,17 +8,23 @@
   <form class="form-signin" action="/createUser" method="post">
     <h2 class="form-signin-heading">Create New User</h2>
 
+    <% if (showMsg) {%>
+    <p style="color:red;"><%= showMsg %></p>
+    <% }%>
     <label for="inputUsername" class="sr-only">Username</label>
     <input name="inputUsername" id="inputUsername" class="form-control" placeholder="Username">
     <br>
     <label for="inputEmail" class="sr-only">Email</label>
-    <input name="inputEmail"id="inputEmail" class="form-control" placeholder="email">
+    <input name="inputEmail"id="inputEmail" class="form-control" placeholder="Email">
     <br>
     <label for="zipcode" class="sr-only">Zip Code</label>
     <input name="zipcode"id="zipcode" class="form-control" placeholder="Zip Code">
     <br>
     <label for="inputPassword" class="sr-only">Password</label>
     <input name="inputPassword" type="password" id="inputPassword" class="form-control" placeholder="Password">
+    <br>
+    <label for="confirmPassword" class="sr-only">Confirm Password</label>
+    <input name="confirmPassword" type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password">
     <br>
     <button id="submitButton" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     <br>
