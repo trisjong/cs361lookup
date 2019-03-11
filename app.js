@@ -82,6 +82,18 @@ app.post("/checkcredentials", function (req, res) {
 app.post("/createUser", function (req, res) {
   // console.log(req.body);
   var context = {};
+  //checks to see if confirm password field matches the initial password field
+  if (req.body.confirmPassword != req.body.inputPassword) {
+	  context.results = "Error! The two password fields do not match";
+	  res.render("login", { showMsg: context.results });
+	  return;
+  }
+  //checks to make sure no fields are blank
+  if (req.body.inputUsername == "" || req.body.inputPassword == "" || req.body.zipcode == "" || req.body.inputEmail == "" || req.body.confirmPassword == "") {
+	  context.results = "Error! There was at least one field left blank";
+	  res.render("login", { showMsg: context.results });
+	  return;
+  }
   mysql.pool.query('INSERT INTO lookup_users (username,pwd,zipcode,email) VALUES (?,?,?,?)',
     [req.body.inputUsername, req.body.inputPassword, req.body.zipcode, req.body.inputEmail],
     function (err, results, fields) {
@@ -97,7 +109,6 @@ app.post("/createUser", function (req, res) {
   );
 
 })
-
 
 // lookupuser
 // samplepwd
