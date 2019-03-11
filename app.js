@@ -4,7 +4,7 @@ var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var mysql = require('./dbcon.js');
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 8619;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //use ejs as default
