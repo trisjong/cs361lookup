@@ -1,1 +1,3 @@
-//FILE IS NOT USED CURRENTLY, PUT ON BOTTOM OF NAVBAR.EJS
+
+//show the modal to ask if the user wants to take a
+//survey on homepage

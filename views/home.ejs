@@ -1,5 +1,41 @@
 <%include partials/navbar%>
 
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#showSurveyPrompt").modal('show');
+    });
+</script>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id=<%= showSurveyPrompt %> tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLongTitle">Would you like to rate your Lookup Experience?</h3>
+      </div>
+      <div class="modal-body">
+        <p>here is a</p>
+        <p>survery</p>
+        <p>about the lookup experience</p>
+      </div>
+      <div class="modal-footer">
+        <a href="/survey"><button type="button" class="btn btn-success" >Yes!</button></a>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">No Thanks</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <h4>Welcome to the homepage Project Lookup for CS 361!!!</h4>
+<h2>Show the fact of the day here</h2>
+
+
+
 
 <%include partials/footer%>

@@ -17,7 +17,13 @@ app.get("/", function (req, res) {
 })
 
 app.get("/home", function (req, res) {
-  res.render("home");
+    var act = ""
+    if (req.query.action==="showSurvey"){
+        act = "showSurveyPrompt"
+    } else {
+        act = "noSurveyPrompt"
+    }
+  res.render("home", { showSurveyPrompt: act});
 })
 
 app.get("/updateUsername", function (req, res) {
@@ -30,6 +36,10 @@ app.get("/updatePassword", function (req, res) {
 
 app.get("/createUser", function(req,res){
   res.render("createUser", {showMsg: ""});
+})
+
+app.get("/survey", function(req,res){
+  res.render("survey");
 })
 
 
