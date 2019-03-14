@@ -17,13 +17,26 @@ app.get("/", function (req, res) {
 })
 
 app.get("/home", function (req, res) {
-    var act = ""
-    if (req.query.action==="showSurvey"){
-        act = "showSurveyPrompt"
-    } else {
-        act = "noSurveyPrompt"
+  var act = ""
+  if (req.query.action === "showSurvey") {
+    act = "showSurveyPrompt"
+  } else {
+    act = "noSurveyPrompt"
+  }
+
+  mysql.pool.query('SELECT name,image,description,location FROM plants ORDER BY RAND() LIMIT 1', function(err, results,fields){
+    if(err){
+      next(err);
+      return;
     }
-  res.render("home", { showSurveyPrompt: act});
+    /*console.log(results);
+    console.log("name: "+results[0].name);
+    console.log("img: "+results[0].image);
+    console.log("desc: "+results[0].description);
+    console.log("loc: "+results[0].location);*/
+    res.render("home", { showSurveyPrompt: act, name: results[0].name, image: results[0].image, description: results[0].description, location: results[0].location });
+  })
+
 })
 
 app.get("/updateUsername", function (req, res) {
@@ -34,11 +47,11 @@ app.get("/updatePassword", function (req, res) {
   res.render("updatePassword");
 })
 
-app.get("/createUser", function(req,res){
-  res.render("createUser", {showMsg: ""});
+app.get("/createUser", function (req, res) {
+  res.render("createUser", { showMsg: "" });
 })
 
-app.get("/survey", function(req,res){
+app.get("/survey", function (req, res) {
   res.render("survey");
 })
 
@@ -94,15 +107,15 @@ app.post("/createUser", function (req, res) {
   var context = {};
   //checks to see if confirm password field matches the initial password field
   if (req.body.confirmPassword != req.body.inputPassword) {
-      context.results = "Error! The two password fields do not match";
-      res.render("createUser", { showMsg: context.results });
-      return;
+    context.results = "Error! The two password fields do not match";
+    res.render("createUser", { showMsg: context.results });
+    return;
   }
   //checks to make sure no fields are blank
   if (req.body.inputUsername == "" || req.body.inputPassword == "" || req.body.zipcode == "" || req.body.inputEmail == "" || req.body.confirmPassword == "") {
-      context.results = "Error! There was at least one field left blank";
-      res.render("createUser", { showMsg: context.results });
-      return;
+    context.results = "Error! There was at least one field left blank";
+    res.render("createUser", { showMsg: context.results });
+    return;
   }
   mysql.pool.query('INSERT INTO lookup_users (username,pwd,zipcode,email) VALUES (?,?,?,?)',
     [req.body.inputUsername, req.body.inputPassword, req.body.zipcode, req.body.inputEmail],
