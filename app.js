@@ -98,6 +98,27 @@ app.post("/checkcredentials", function (req, res) {
 
 })
 
+app.post("/submitSurvey", function (req, res) {
+	var context = {};
+	//inserts survey result data into the table
+	mysql.pool.query('INSERT INTO survey_data (question1,question2) VALUES (?,?)',
+		[req.body.question1, req.body.question2]
+	);
+	//shows the home page
+	mysql.pool.query('SELECT name,image,description,location FROM plants ORDER BY RAND() LIMIT 1', function(err, results,fields){
+		if(err){
+		next(err);
+		return;
+		}
+		/*console.log(results);
+		console.log("name: "+results[0].name);
+		console.log("img: "+results[0].image);
+		console.log("desc: "+results[0].description);
+		console.log("loc: "+results[0].location);*/
+		res.render("home", { showSurveyPrompt: "noSurveyPrompt", name: results[0].name, image: results[0].image, description: results[0].description, location: results[0].location });
+	})
+	
+})
 
 //ensure fields have valid input
 //check to make sure username isn't duplicated
