@@ -1,1 +1,30 @@
-<h5>Take the survey!!!</h5>
+<%include partials/navbar%>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/styles.css">
+
+
+
+<div class="container">
+
+
+  <form class="form-signin" action="/submitSurvey" method="post">
+    <h2 class="form-signin-heading">User Satisfaction Survey</h2>
+	
+	<h5 class="form-signin">Are you satisfied with the LookUp! application?</h5>
+	<br>
+    <input type = "radio" name="question1" id="question1-yes" value=1> Yes		
+	<input type = "radio" name="question1" id="question-no" value=0> No
+    <br>
+	<h5 class="form-signin">Would you recommend the LookUp! application to a friend?</h5>
+	<br>
+    <input type = "radio" name="question2" id="question2-yes" value=1> Yes		
+	<input type = "radio" name="question2" id="question2-no" value=0> No
+    <br>
+	<br>
+    <button id="surveyButton" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+  </form>
+
+</div> 
+
+<%include partials/footer%>
