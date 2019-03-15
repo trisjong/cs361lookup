@@ -4,7 +4,7 @@ var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var mysql = require('./dbcon.js');
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 8619;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //use ejs as default
@@ -17,7 +17,26 @@ app.get("/", function (req, res) {
 })
 
 app.get("/home", function (req, res) {
-  res.render("home");
+  var act = ""
+  if (req.query.action === "showSurvey") {
+    act = "showSurveyPrompt"
+  } else {
+    act = "noSurveyPrompt"
+  }
+
+  mysql.pool.query('SELECT name,image,description,location FROM plants ORDER BY RAND() LIMIT 1', function(err, results,fields){
+    if(err){
+      next(err);
+      return;
+    }
+    /*console.log(results);
+    console.log("name: "+results[0].name);
+    console.log("img: "+results[0].image);
+    console.log("desc: "+results[0].description);
+    console.log("loc: "+results[0].location);*/
+    res.render("home", { showSurveyPrompt: act, name: results[0].name, image: results[0].image, description: results[0].description, location: results[0].location });
+  })
+
 })
 
 app.get("/updateUsername", function (req, res) {
@@ -28,8 +47,12 @@ app.get("/updatePassword", function (req, res) {
   res.render("updatePassword");
 })
 
-app.get("/createUser", function(req,res){
-  res.render("createUser");
+app.get("/createUser", function (req, res) {
+  res.render("createUser", { showMsg: "" });
+})
+
+app.get("/survey", function (req, res) {
+  res.render("survey");
 })
 
 
@@ -75,24 +98,45 @@ app.post("/checkcredentials", function (req, res) {
 
 })
 
+app.post("/submitSurvey", function (req, res) {
+	var context = {};
+	//inserts survey result data into the table
+	mysql.pool.query('INSERT INTO survey_data (question1,question2) VALUES (?,?)',
+		[req.body.question1, req.body.question2]
+	);
+	//shows the home page
+	mysql.pool.query('SELECT name,image,description,location FROM plants ORDER BY RAND() LIMIT 1', function(err, results,fields){
+		if(err){
+		next(err);
+		return;
+		}
+		/*console.log(results);
+		console.log("name: "+results[0].name);
+		console.log("img: "+results[0].image);
+		console.log("desc: "+results[0].description);
+		console.log("loc: "+results[0].location);*/
+		res.render("home", { showSurveyPrompt: "noSurveyPrompt", name: results[0].name, image: results[0].image, description: results[0].description, location: results[0].location });
+	})
+	
+})
 
-// lookupuser
-// samplepwd
-//will be given a password and email combo
+//ensure fields have valid input
+//check to make sure username isn't duplicated
+//insert new user into database
 app.post("/createUser", function (req, res) {
   // console.log(req.body);
   var context = {};
   //checks to see if confirm password field matches the initial password field
   if (req.body.confirmPassword != req.body.inputPassword) {
-	  context.results = "Error! The two password fields do not match";
-	  res.render("login", { showMsg: context.results });
-	  return;
+    context.results = "Error! The two password fields do not match";
+    res.render("createUser", { showMsg: context.results });
+    return;
   }
   //checks to make sure no fields are blank
   if (req.body.inputUsername == "" || req.body.inputPassword == "" || req.body.zipcode == "" || req.body.inputEmail == "" || req.body.confirmPassword == "") {
-	  context.results = "Error! There was at least one field left blank";
-	  res.render("login", { showMsg: context.results });
-	  return;
+    context.results = "Error! There was at least one field left blank";
+    res.render("createUser", { showMsg: context.results });
+    return;
   }
   mysql.pool.query('INSERT INTO lookup_users (username,pwd,zipcode,email) VALUES (?,?,?,?)',
     [req.body.inputUsername, req.body.inputPassword, req.body.zipcode, req.body.inputEmail],
@@ -109,6 +153,7 @@ app.post("/createUser", function (req, res) {
   );
 
 })
+
 
 // lookupuser
 // samplepwd
